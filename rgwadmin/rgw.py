@@ -159,8 +159,11 @@ class RGWAdmin:
             data=data
         )
 
-    def get_metadata(self, metadata_type, key=None, max_entries=None,
-                     marker=None, headers=None):
+    def get_metadata(self, metadata_type,
+                     key=None,
+                     max_entries=None,
+                     marker=None,
+                     headers=None):
         ''' Returns a JSON object representation of the metadata '''
         params = {'format': self._response}
         if key is not None:
@@ -223,8 +226,14 @@ class RGWAdmin:
         return self.request('get', '/%s/user?format=%s&uid=%s' %
                             (self._admin, self._response, uid))
 
-    def get_users(self):
-        return self.get_metadata(metadata_type='user')
+    def get_users(self,
+                  max_entries=None,
+                  marker=None,
+                  headers=None):
+        return self.get_metadata(metadata_type='user',
+                                 max_entries=max_entries,
+                                 marker=marker,
+                                 headers=headers)
 
     def create_user(self, uid, display_name, email=None, key_type='s3',
                     access_key=None, secret_key=None, user_caps=None,
@@ -391,9 +400,15 @@ class RGWAdmin:
         return self.request('delete', '/%s/user?key&format=%s&%s' %
                             (self._admin, self._response, parameters))
 
-    def get_buckets(self):
+    def get_buckets(self,
+                    max_entries=None,
+                    marker=None,
+                    headers=None):
         '''Returns a list of all buckets in the radosgw'''
-        return self.get_metadata(metadata_type='bucket')
+        return self.get_metadata(metadata_type='bucket',
+                                 max_entries=max_entries,
+                                 marker=marker,
+                                 headers=headers)
 
     def get_bucket(self, bucket=None, uid=None, stats=False):
         parameters = ''
@@ -454,9 +469,15 @@ class RGWAdmin:
         return self.request('delete', '/%s/user?caps&format=%s&%s' %
                             (self._admin, self._response, parameters))
 
-    def get_bucket_instances(self):
+    def get_bucket_instances(self,
+                             max_entries=None,
+                             marker=None,
+                             headers=None):
         '''Returns a list of all bucket instances in the radosgw'''
-        return self.get_metadata(metadata_type='bucket.instance')
+        return self.get_metadata(metadata_type='bucket.instance',
+                                 max_entries=max_entries,
+                                 marker=marker,
+                                 headers=headers)
 
     @staticmethod
     def parse_rados_datestring(s):
